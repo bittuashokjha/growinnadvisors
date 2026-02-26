@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growinn Advisors – Strategic Financial Guidance</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#b8963e; --gold-l:#d4af6a; --gold-pale:#f5edd8;
+  --dark:#0e1117; --dark2:#161b26; --dark3:#1e2535;
+  --gray:#6b7280; --light:#f9f7f3; --white:#ffffff; --text:#1a1f2e;
+  --border:#e8e4da;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--white);overflow-x:hidden;}
+
+/* ── PAGE SYSTEM ── */
+.page{display:none;animation:fadeIn 0.4s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(14,17,23,0.97);backdrop-filter:blur(12px);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:70px;border-bottom:1px solid rgba(184,150,62,0.2);transition:height 0.3s;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--white);letter-spacing:0.04em;cursor:pointer;text-decoration:none;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+.nav-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;cursor:pointer;padding:0.3rem 0;border-bottom:2px solid transparent;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);border-bottom-color:var(--gold);}
+.nav-cta{background:var(--gold)!important;color:var(--dark)!important;padding:0.5rem 1.3rem!important;border-radius:2px!important;font-weight:600!important;border-bottom:none!important;}
+.nav-cta:hover{background:var(--gold-l)!important;}
+
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white);transition:all 0.3s;}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+.mobile-menu{display:none;position:fixed;top:70px;left:0;right:0;background:var(--dark);z-index:999;padding:1.5rem 5%;flex-direction:column;gap:0;border-bottom:2px solid var(--gold);}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.9rem;font-weight:500;padding:0.9rem 0;border-bottom:1px solid rgba(255,255,255,0.06);letter-spacing:0.05em;cursor:pointer;transition:color 0.2s;}
+.mobile-menu a:hover{color:var(--gold);}
+.mobile-menu a.cta-mob{color:var(--gold)!important;font-weight:600;}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:var(--dark);position:relative;display:flex;align-items:center;overflow:hidden;padding-top:70px;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 50%,rgba(184,150,62,0.12) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(184,150,62,0.06) 0%,transparent 60%);}
+.hero-pattern{position:absolute;inset:0;background-image:linear-gradient(rgba(184,150,62,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(184,150,62,0.04) 1px,transparent 1px);background-size:60px 60px;}
+.hero-content{position:relative;z-index:2;padding:4rem 8%;max-width:720px;}
+.hero-tag{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.35rem 1rem;margin-bottom:2rem;animation:fadeUp 0.8s ease both;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,5.5vw,4.8rem);font-weight:600;color:var(--white);line-height:1.1;margin-bottom:1.5rem;animation:fadeUp 0.8s 0.15s ease both;}
+.hero h1 em{color:var(--gold);font-style:normal;}
+.hero p{color:rgba(255,255,255,0.6);font-size:1rem;line-height:1.85;max-width:540px;margin-bottom:2.5rem;animation:fadeUp 0.8s 0.3s ease both;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp 0.8s 0.45s ease both;}
+.hero-stats{position:absolute;right:6%;bottom:10%;display:flex;gap:3rem;animation:fadeUp 0.8s 0.6s ease both;}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--gold);line-height:1;}
+.stat-label{color:rgba(255,255,255,0.5);font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.3rem;}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.35);font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;}
+.scroll-line{width:1px;height:45px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s infinite;}
+
+/* ── FEATURES BAR ── */
+.features-bar{background:var(--gold);display:grid;grid-template-columns:repeat(4,1fr);}
+.feat-item{padding:1.2rem 1.5rem;display:flex;align-items:center;gap:0.8rem;border-right:1px solid rgba(0,0,0,0.1);transition:background 0.2s;cursor:default;}
+.feat-item:last-child{border-right:none;}
+.feat-item:hover{background:var(--gold-l);}
+.feat-icon{font-size:1.4rem;}
+.feat-text{font-size:0.82rem;font-weight:600;color:var(--dark);}
+
+/* ── SECTION COMMONS ── */
+section{padding:5.5rem 8%;}
+.sec-tag{color:var(--gold);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;margin-bottom:0.7rem;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3.8vw,3rem);font-weight:600;color:var(--text);line-height:1.2;margin-bottom:1.2rem;}
+.sec-title em{color:var(--gold);font-style:normal;}
+.sec-title-white{color:var(--white);}
+.divider{width:55px;height:3px;background:var(--gold);margin-bottom:1.8rem;}
+.divider-center{margin:0 auto 1.8rem;}
+
+/* ── BUTTONS ── */
+.btn-gold{background:var(--gold);color:var(--dark);padding:0.85rem 2rem;font-weight:600;font-size:0.86rem;letter-spacing:0.05em;text-decoration:none;border-radius:2px;transition:background 0.2s,transform 0.2s;display:inline-block;cursor:pointer;border:none;}
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-2px);}
+.btn-outline-w{border:1px solid rgba(255,255,255,0.3);color:var(--white);padding:0.85rem 2rem;font-weight:500;font-size:0.86rem;letter-spacing:0.05em;text-decoration:none;border-radius:2px;transition:all 0.2s;display:inline-block;cursor:pointer;background:transparent;}
+.btn-outline-w:hover{border-color:var(--gold);background:rgba(184,150,62,0.08);}
+.btn-dark{background:var(--dark);color:var(--white);padding:0.85rem 2rem;font-weight:600;font-size:0.86rem;letter-spacing:0.05em;text-decoration:none;border-radius:2px;transition:all 0.2s;display:inline-block;cursor:pointer;border:none;}
+.btn-dark:hover{background:var(--dark2);transform:translateY(-2px);}
+
+/* ── ABOUT ── */
+.about-sec{background:var(--light);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.about-img-box{aspect-ratio:4/5;background:var(--dark3);border-radius:4px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+.about-img-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--dark2),var(--dark3) 50%,#2a3548);}
+.about-monogram{position:relative;z-index:1;font-family:'Cormorant Garamond',serif;font-size:6rem;font-weight:300;color:rgba(184,150,62,0.2);}
+.about-badge{position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--gold);padding:1.3rem 1.8rem;border-radius:4px;text-align:center;box-shadow:0 20px 40px rgba(0,0,0,0.15);}
+.badge-num{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:var(--dark);line-height:1;}
+.badge-txt{font-size:0.68rem;font-weight:600;color:var(--dark);letter-spacing:0.08em;text-transform:uppercase;}
+.about-visual{position:relative;}
+.about-content p{color:var(--gray);line-height:1.9;margin-bottom:1.1rem;font-size:0.93rem;}
+.about-pts{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin:1.8rem 0;}
+.about-pt{display:flex;align-items:flex-start;gap:0.6rem;}
+.pt-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;margin-top:0.45rem;flex-shrink:0;}
+.pt-text{font-size:0.84rem;font-weight:500;color:var(--text);}
+
+/* ── SERVICES ── */
+.services-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);}
+.svc-card{background:var(--white);padding:2.2rem;transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden;}
+.svc-card::after{content:'';position:absolute;bottom:0;left:0;width:0;height:3px;background:var(--gold);transition:width 0.3s;}
+.svc-card:hover{background:var(--dark);}
+.svc-card:hover::after{width:100%;}
+.svc-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:rgba(184,150,62,0.2);line-height:1;margin-bottom:0.8rem;transition:color 0.3s;}
+.svc-card:hover .svc-num{color:rgba(184,150,62,0.35);}
+.svc-ico{font-size:1.7rem;margin-bottom:0.8rem;}
+.svc-name{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;color:var(--text);margin-bottom:0.7rem;transition:color 0.3s;}
+.svc-card:hover .svc-name{color:var(--white);}
+.svc-desc{font-size:0.83rem;color:var(--gray);line-height:1.75;transition:color 0.3s;}
+.svc-card:hover .svc-desc{color:rgba(255,255,255,0.55);}
+.svc-arrow{margin-top:1.3rem;color:var(--gold);font-size:1.1rem;transition:transform 0.3s;display:inline-block;}
+.svc-card:hover .svc-arrow{transform:translateX(6px);}
+
+/* ── WHY US ── */
+.why-sec{background:var(--dark);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.why-sec p{color:rgba(255,255,255,0.55);font-size:0.93rem;line-height:1.9;margin-bottom:2rem;}
+.pillars{display:flex;flex-direction:column;gap:1.2rem;}
+.pillar{display:flex;gap:1.3rem;align-items:flex-start;padding:1.3rem;border:1px solid rgba(184,150,62,0.15);border-radius:4px;background:rgba(184,150,62,0.04);transition:all 0.3s;}
+.pillar:hover{border-color:rgba(184,150,62,0.4);background:rgba(184,150,62,0.08);}
+.pillar-ico{width:46px;height:46px;background:var(--gold);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.pillar-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--white);margin-bottom:0.3rem;}
+.pillar-text{font-size:0.81rem;color:rgba(255,255,255,0.5);line-height:1.65;}
+
+/* ── TEAM ── */
+.team-sec{background:var(--light);}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;}
+.team-card{background:var(--white);border-radius:4px;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s;}
+.team-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,0.1);}
+.team-photo{aspect-ratio:3/4;background:var(--dark3);display:flex;align-items:center;justify-content:center;position:relative;}
+.team-init{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:rgba(184,150,62,0.5);}
+.team-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,17,23,0.7) 0%,transparent 50%);}
+.team-info{padding:1.1rem 1.2rem;}
+.team-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:0.2rem;}
+.team-role{font-size:0.72rem;color:var(--gold);font-weight:500;letter-spacing:0.05em;text-transform:uppercase;}
+
+/* ── TESTIMONIALS ── */
+.testi-sec{background:var(--white);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.testi-card{padding:1.8rem;border:1px solid var(--border);border-radius:4px;transition:all 0.3s;}
+.testi-card:hover{border-color:var(--gold);box-shadow:0 10px 30px rgba(184,150,62,0.1);}
+.testi-q{font-family:'Cormorant Garamond',serif;font-size:3.5rem;color:var(--gold);line-height:0.5;margin-bottom:0.8rem;opacity:0.35;}
+.testi-text{font-size:0.86rem;color:var(--gray);line-height:1.8;margin-bottom:1.3rem;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:0.9rem;}
+.testi-av{width:42px;height:42px;border-radius:50%;background:var(--dark3);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--gold);font-weight:600;flex-shrink:0;}
+.testi-name{font-weight:600;font-size:0.86rem;color:var(--text);}
+.testi-co{font-size:0.73rem;color:var(--gold);font-weight:500;}
+
+/* ── CTA BAND ── */
+.cta-band{background:var(--gold);padding:4.5rem 8%;text-align:center;}
+.cta-band h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,3.8vw,3.2rem);font-weight:600;color:var(--dark);margin-bottom:0.9rem;}
+.cta-band p{color:rgba(14,17,23,0.7);font-size:0.96rem;max-width:520px;margin:0 auto 2.2rem;line-height:1.8;}
+
+/* ── CONTACT PAGE ── */
+.contact-hero{min-height:40vh;background:var(--dark);display:flex;align-items:center;padding:7rem 8% 4rem;position:relative;overflow:hidden;}
+.contact-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(184,150,62,0.1) 0%,transparent 70%);}
+.contact-hero-content{position:relative;z-index:2;}
+.contact-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:600;color:var(--white);line-height:1.1;margin-bottom:1rem;}
+.contact-hero p{color:rgba(255,255,255,0.6);font-size:1rem;max-width:480px;line-height:1.8;}
+.contact-body{background:var(--light);padding:5rem 8%;display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;}
+.contact-info h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--text);margin-bottom:1.5rem;}
+.cinfo-item{display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start;}
+.cinfo-icon{width:44px;height:44px;background:var(--gold);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.cinfo-label{font-size:0.72rem;color:var(--gold);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.2rem;}
+.cinfo-val{font-size:0.9rem;color:var(--text);font-weight:500;line-height:1.6;}
+.contact-form{background:var(--white);padding:2.5rem;border-radius:4px;box-shadow:0 4px 30px rgba(0,0,0,0.06);}
+.contact-form h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--text);margin-bottom:1.5rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;color:var(--text);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.4rem;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:0.75rem 1rem;border:1px solid var(--border);border-radius:2px;font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--text);background:var(--white);transition:border-color 0.2s;outline:none;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
+.form-group textarea{resize:vertical;min-height:120px;}
+.form-success{display:none;background:#f0faf0;border:1px solid #4caf50;border-radius:4px;padding:1rem;color:#2e7d32;font-size:0.88rem;margin-top:1rem;text-align:center;}
+
+/* ── ABOUT PAGE ── */
+.page-hero{min-height:38vh;background:var(--dark);display:flex;align-items:center;padding:7rem 8% 4rem;position:relative;overflow:hidden;}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(184,150,62,0.1) 0%,transparent 70%);}
+.page-hero-content{position:relative;z-index:2;}
+.page-hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:600;color:var(--white);line-height:1.1;margin-bottom:1rem;}
+.page-hero p{color:rgba(255,255,255,0.6);font-size:1rem;max-width:500px;line-height:1.8;}
+.breadcrumb{display:flex;gap:0.5rem;align-items:center;font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:1rem;}
+.breadcrumb a{color:var(--gold);cursor:pointer;text-decoration:none;}
+.breadcrumb span{color:rgba(255,255,255,0.25);}
+
+/* Mission/Vision */
+.mv-sec{background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);}
+.mv-card{background:var(--white);padding:3rem;}
+.mv-card h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:var(--text);margin-bottom:1rem;}
+.mv-card p{color:var(--gray);font-size:0.93rem;line-height:1.9;}
+.values-sec{background:var(--light);padding:5rem 8%;}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.value-card{background:var(--white);padding:2rem;border-radius:4px;border-top:3px solid var(--gold);transition:transform 0.3s,box-shadow 0.3s;}
+.value-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.08);}
+.value-ico{font-size:2rem;margin-bottom:1rem;}
+.value-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--text);margin-bottom:0.6rem;}
+.value-text{font-size:0.83rem;color:var(--gray);line-height:1.75;}
+
+/* ── SERVICES PAGE ── */
+.services-full{background:var(--white);padding:5rem 8%;}
+.svc-full-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.svc-full-card{padding:2.2rem;border:1px solid var(--border);border-radius:4px;transition:all 0.3s;cursor:default;}
+.svc-full-card:hover{border-color:var(--gold);box-shadow:0 10px 30px rgba(184,150,62,0.1);transform:translateY(-4px);}
+.sfc-ico{font-size:2.2rem;margin-bottom:1rem;}
+.sfc-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--text);margin-bottom:0.7rem;}
+.sfc-desc{font-size:0.83rem;color:var(--gray);line-height:1.75;}
+.sfc-list{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);}
+.sfc-list li{font-size:0.8rem;color:var(--gray);padding:0.3rem 0;display:flex;align-items:center;gap:0.5rem;list-style:none;}
+.sfc-list li::before{content:'▸';color:var(--gold);font-size:0.7rem;}
+
+/* ── TEAM PAGE ── */
+.team-page{background:var(--white);padding:5rem 8%;}
+.team-full-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;}
+.tf-card{background:var(--light);border-radius:4px;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s;}
+.tf-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(0,0,0,0.1);}
+.tf-photo{aspect-ratio:1;background:var(--dark3);display:flex;align-items:center;justify-content:center;position:relative;}
+.tf-init{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:300;color:rgba(184,150,62,0.5);}
+.tf-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,17,23,0.6),transparent 50%);}
+.tf-info{padding:1.5rem;}
+.tf-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--text);margin-bottom:0.2rem;}
+.tf-role{font-size:0.72rem;color:var(--gold);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.8rem;}
+.tf-bio{font-size:0.82rem;color:var(--gray);line-height:1.75;}
+
+/* ── CAREERS PAGE ── */
+.careers-sec{background:var(--white);padding:5rem 8%;}
+.career-intro{max-width:700px;margin:0 auto 4rem;text-align:center;}
+.career-intro p{color:var(--gray);font-size:0.95rem;line-height:1.9;}
+.jobs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.job-card{border:1px solid var(--border);border-radius:4px;padding:2rem;transition:all 0.3s;}
+.job-card:hover{border-color:var(--gold);box-shadow:0 8px 25px rgba(184,150,62,0.1);}
+.job-dept{font-size:0.7rem;color:var(--gold);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
+.job-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--text);margin-bottom:0.5rem;}
+.job-meta{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;}
+.job-tag{background:var(--gold-pale);color:var(--dark);font-size:0.72rem;font-weight:600;padding:0.25rem 0.7rem;border-radius:50px;}
+.job-desc{font-size:0.83rem;color:var(--gray);line-height:1.75;margin-bottom:1.2rem;}
+
+/* ── FOOTER ── */
+footer{background:var(--dark);padding:4rem 8% 2rem;color:rgba(255,255,255,0.5);}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-logo-f{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--white);margin-bottom:0.9rem;display:block;cursor:pointer;}
+.footer-logo-f span{color:var(--gold);}
+.footer-about{font-size:0.82rem;line-height:1.8;max-width:270px;}
+.footer-head{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:1.1rem;}
+.footer-ul{list-style:none;display:flex;flex-direction:column;gap:0.55rem;}
+.footer-ul a{color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.82rem;transition:color 0.2s;cursor:pointer;}
+.footer-ul a:hover{color:var(--gold);}
+.footer-ci{display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.7rem;font-size:0.81rem;line-height:1.6;}
+.fci-icon{color:var(--gold);font-size:0.85rem;margin-top:0.1rem;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.07);padding-top:1.4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;font-size:0.76rem;}
+.footer-bottom-links{display:flex;gap:1.4rem;}
+.footer-bottom-links a{color:rgba(255,255,255,0.3);text-decoration:none;cursor:pointer;transition:color 0.2s;}
+.footer-bottom-links a:hover{color:var(--gold);}
+.social-links{display:flex;gap:0.7rem;margin-top:1rem;}
+.social-link{width:34px;height:34px;border:1px solid rgba(184,150,62,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:rgba(255,255,255,0.5);transition:all 0.2s;cursor:pointer;}
+.social-link:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+.reveal{opacity:0;transform:translateY(25px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero-stats{display:none;}
+  .hero-content{padding:3rem 6% 4rem;}
+  .features-bar{grid-template-columns:1fr 1fr;}
+  .about-sec,.why-sec,.contact-body,.mv-sec{grid-template-columns:1fr;}
+  .about-badge{right:0;bottom:-1rem;}
+  .services-grid,.svc-full-grid,.values-grid,.testi-grid,.team-full-grid{grid-template-columns:1fr;}
+  .team-grid{grid-template-columns:repeat(2,1fr);}
+  .services-header{flex-direction:column;align-items:flex-start;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  .footer-bottom-links{justify-content:center;}
+  .jobs-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  section{padding:4rem 6%;}
+  .about-sec,.why-sec{padding:4rem 6%;}
+  .contact-body{padding:4rem 6%;}
+  .page-hero,.contact-hero{padding:6rem 6% 3rem;}
+}
+@media(max-width:480px){
+  .features-bar{grid-template-columns:1fr;}
+  .team-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav id="mainNav">
+  <a class="nav-logo" onclick="showPage('home')">Growinn<span> Advisors</span></a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" data-page="home">Home</a></li>
+    <li><a onclick="showPage('about')" data-page="about">About Us</a></li>
+    <li><a onclick="showPage('services')" data-page="services">Services</a></li>
+    <li><a onclick="showPage('team')" data-page="team">Team</a></li>
+    <li><a onclick="showPage('careers')" data-page="careers">Career</a></li>
+    <li><a onclick="showPage('contact')" data-page="contact" class="nav-cta">Contact Us</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('home');closeMenu()">Home</a>
+  <a onclick="showPage('about');closeMenu()">About Us</a>
+  <a onclick="showPage('services');closeMenu()">Services</a>
+  <a onclick="showPage('team');closeMenu()">Team</a>
+  <a onclick="showPage('careers');closeMenu()">Career</a>
+  <a onclick="showPage('contact');closeMenu()" class="cta-mob">Contact Us →</a>
+</div>
+
+<!-- ══════════ HOME PAGE ══════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Strategic Financial Advisory · Mumbai</div>
+      <h1>Expert Consulting for a <em>Sustainable Future</em></h1>
+      <p>At Growinn Advisors, we approach every client relationship with a unique perspective and unwavering energy — delivering bespoke financial solutions that drive lasting growth.</p>
+      <div class="hero-btns">
+        <button class="btn-gold" onclick="showPage('contact')">Schedule a Free Consultation</button>
+        <button class="btn-outline-w" onclick="showPage('services')">Our Services</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">20+</div><div class="stat-label">Years Experience</div></div>
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Clients Served</div></div>
+      <div class="stat"><div class="stat-num">₹10B+</div><div class="stat-label">Funds Raised</div></div>
+    </div>
+    <div class="scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+  </section>
+
+  <!-- FEATURES BAR -->
+  <div class="features-bar">
+    <div class="feat-item"><div class="feat-icon">🏦</div><div class="feat-text">Strategic Financial Guidance</div></div>
+    <div class="feat-item"><div class="feat-icon">⚖️</div><div class="feat-text">Regulatory & Compliance</div></div>
+    <div class="feat-item"><div class="feat-icon">📊</div><div class="feat-text">Performance-Driven Insights</div></div>
+    <div class="feat-item"><div class="feat-icon">🎯</div><div class="feat-text">Tailored Business Solutions</div></div>
+  </div>
+
+  <!-- ABOUT PREVIEW -->
+  <section class="about-sec">
+    <div class="about-visual reveal">
+      <div class="about-img-box"><div class="about-monogram">GA</div></div>
+      <div class="about-badge"><div class="badge-num">25+</div><div class="badge-txt">Years of Trust</div></div>
+    </div>
+    <div class="about-content reveal">
+      <div class="sec-tag">Welcome to Growinn Advisors</div>
+      <h2 class="sec-title">We Work With You to <em>Make Your Vision</em> a Reality</h2>
+      <div class="divider"></div>
+      <p>At Growinn Advisors, our multidisciplinary team of experts — comprising Chartered Accountants, Company Secretaries, and Postgraduates — leverages diverse experience in finance, accounting, and compliance to deliver bespoke solutions.</p>
+      <p>We are committed to delivering value-added services with tailor-made solutions supporting the speedy growth of businesses, as well as value creation for investors.</p>
+      <div class="about-pts">
+        <div class="about-pt"><div class="pt-dot"></div><div class="pt-text">Client-First Approach</div></div>
+        <div class="about-pt"><div class="pt-dot"></div><div class="pt-text">Global Standards</div></div>
+        <div class="about-pt"><div class="pt-dot"></div><div class="pt-text">Innovative Solutions</div></div>
+        <div class="about-pt"><div class="pt-dot"></div><div class="pt-text">Ethical Practice</div></div>
+      </div>
+      <button class="btn-gold" onclick="showPage('about')">More About Us</button>
+    </div>
+  </section>
+
+  <!-- SERVICES PREVIEW -->
+  <section style="background:var(--white);padding:5.5rem 8%;">
+    <div class="services-header reveal">
+      <div>
+        <div class="sec-tag">What We Offer</div>
+        <h2 class="sec-title">Our <em>Services</em></h2>
+        <div class="divider"></div>
+      </div>
+      <button class="btn-gold" onclick="showPage('services')">All Services</button>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal"><div class="svc-num">01</div><div class="svc-ico">📋</div><div class="svc-name">Attest & Assurance</div><div class="svc-desc">Comprehensive audit and assurance services ensuring accuracy, transparency, and regulatory compliance.</div><div class="svc-arrow">→</div></div>
+      <div class="svc-card reveal"><div class="svc-num">02</div><div class="svc-ico">📈</div><div class="svc-name">Direct Tax Advisory</div><div class="svc-desc">Expert guidance on income tax assessments, search & survey matters, litigations, and advisory services.</div><div class="svc-arrow">→</div></div>
+      <div class="svc-card reveal"><div class="svc-num">03</div><div class="svc-ico">🧾</div><div class="svc-name">Indirect Tax Advisory</div><div class="svc-desc">GST compliance, litigation, and advisory matters handled by seasoned indirect taxation professionals.</div><div class="svc-arrow">→</div></div>
+      <div class="svc-card reveal"><div class="svc-num">04</div><div class="svc-ico">💼</div><div class="svc-name">Debt Syndication</div><div class="svc-desc">Structured debt advisory and restructuring with strong networks across banks and financial institutions.</div><div class="svc-arrow">→</div></div>
+      <div class="svc-card reveal"><div class="svc-num">05</div><div class="svc-ico">💎</div><div class="svc-name">Wealth Services</div><div class="svc-desc">Holistic wealth management and investment strategies for high-net-worth individuals and families.</div><div class="svc-arrow">→</div></div>
+      <div class="svc-card reveal"><div class="svc-num">06</div><div class="svc-ico">🏛️</div><div class="svc-name">Investment Banking</div><div class="svc-desc">End-to-end investment banking assistance including equity, debt transactions and cross-border M&A.</div><div class="svc-arrow">→</div></div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why-sec">
+    <div class="reveal">
+      <div class="sec-tag">Why Choose Us</div>
+      <h2 class="sec-title sec-title-white">An <em>Ambitious,</em> Goal-Oriented Firm</h2>
+      <div class="divider"></div>
+      <p>Growinn Advisors is a result-oriented financial institution that creates maximum value for businesses and investors. Our collaborative expertise and global outlook are directed at ensuring the growth of our clients at all stages.</p>
+      <button class="btn-gold" onclick="showPage('contact')">Let's Connect</button>
+    </div>
+    <div class="pillars reveal">
+      <div class="pillar"><div class="pillar-ico">🥇</div><div><div class="pillar-name">Clients First</div><div class="pillar-text">We ensure our client's requirements are completely heard and taken care of for the most delightful long-term experience.</div></div></div>
+      <div class="pillar"><div class="pillar-ico">🔭</div><div><div class="pillar-name">Clear Vision</div><div class="pillar-text">We foster an environment of mutual growth and long-term rewarding relationships with affordable, guaranteed growth.</div></div></div>
+      <div class="pillar"><div class="pillar-ico">💰</div><div><div class="pillar-name">Value for Money</div><div class="pillar-text">Charges based on cost-benefit analysis from the client's perspective with utmost care and active leadership.</div></div></div>
+      <div class="pillar"><div class="pillar-ico">🌐</div><div><div class="pillar-name">Global Standards</div><div class="pillar-text">High-quality financial advisory services meeting global standards with innovative solutions for a growing environment.</div></div></div>
+    </div>
+  </section>
+
+  <!-- TEAM PREVIEW -->
+  <section class="team-sec">
+    <div class="reveal" style="text-align:center;">
+      <div class="sec-tag">Our Leadership</div>
+      <h2 class="sec-title">Meet the <em>Team</em></h2>
+      <div class="divider divider-center"></div>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal"><div class="team-photo"><div class="team-init">AK</div><div class="team-overlay"></div></div><div class="team-info"><div class="team-name">Arjun Kapoor</div><div class="team-role">Director – Tax Advisory</div></div></div>
+      <div class="team-card reveal"><div class="team-photo"><div class="team-init">PS</div><div class="team-overlay"></div></div><div class="team-info"><div class="team-name">Priya Sharma</div><div class="team-role">Director – Wealth Services</div></div></div>
+      <div class="team-card reveal"><div class="team-photo"><div class="team-init">RM</div><div class="team-overlay"></div></div><div class="team-info"><div class="team-name">Rohan Mehta</div><div class="team-role">Director – Investment Banking</div></div></div>
+      <div class="team-card reveal"><div class="team-photo"><div class="team-init">SJ</div><div class="team-overlay"></div></div><div class="team-info"><div class="team-name">Sunita Joshi</div><div class="team-role">Director – Compliance</div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;"><button class="btn-gold" onclick="showPage('team')">View Full Team</button></div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi-sec">
+    <div class="reveal" style="text-align:center;">
+      <div class="sec-tag">Client Stories</div>
+      <h2 class="sec-title">What Our <em>Clients</em> Say</h2>
+      <div class="divider divider-center"></div>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal"><div class="testi-q">"</div><div class="testi-text">Working with Growinn Advisors felt like having an experienced co-founder on our side. They helped us mould our business strategy and we're now aligned to achieve the scale we've always wanted.</div><div class="testi-author"><div class="testi-av">RS</div><div><div class="testi-name">Rahul Singhania</div><div class="testi-co">TechStartup Pvt. Ltd.</div></div></div></div>
+      <div class="testi-card reveal"><div class="testi-q">"</div><div class="testi-text">I'm absolutely delighted with the service. It is truly invigorating to work with financial advisors who are genuinely keen on their client's needs, circumstances and preferences.</div><div class="testi-author"><div class="testi-av">MD</div><div><div class="testi-name">Meera Desai</div><div class="testi-co">Desai Enterprises</div></div></div></div>
+      <div class="testi-card reveal"><div class="testi-q">"</div><div class="testi-text">Growinn Advisors looks at your business holistically. The team has always been focused on meticulous delivery. They've gained immense trust and respect from us over the years.</div><div class="testi-author"><div class="testi-av">VK</div><div><div class="testi-name">Vijay Kumar</div><div class="testi-co">Kumar Industries Ltd.</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <h2>Let's Collaborate &amp; Grow Together</h2>
+    <p>From early-stage start-up growth strategies to helping existing businesses scale — we've done it all.</p>
+    <button class="btn-dark" onclick="showPage('contact')">Schedule a Free Consultation</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <span class="footer-logo-f" onclick="showPage('home')">Growinn<span> Advisors</span></span>
+        <div class="footer-about">A multidisciplinary financial advisory firm delivering bespoke solutions in taxation, compliance, wealth management, and investment banking. Based in Mumbai.</div>
+        <div class="social-links">
+          <div class="social-link">in</div>
+          <div class="social-link">f</div>
+          <div class="social-link">tw</div>
+          <div class="social-link">ig</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-head">Services</div>
+        <ul class="footer-ul">
+          <li><a onclick="showPage('services')">Attest & Assurance</a></li>
+          <li><a onclick="showPage('services')">Direct Tax Advisory</a></li>
+          <li><a onclick="showPage('services')">Indirect Tax Advisory</a></li>
+          <li><a onclick="showPage('services')">Debt Syndication</a></li>
+          <li><a onclick="showPage('services')">Wealth Services</a></li>
+          <li><a onclick="showPage('services')">Investment Banking</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-head">Quick Links</div>
+        <ul class="footer-ul">
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('about')">About Us</a></li>
+          <li><a onclick="showPage('team')">Our Team</a></li>
+          <li><a onclick="showPage('careers')">Careers</a></li>
+          <li><a onclick="showPage('contact')">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-head">Contact</div>
+        <div class="footer-ci"><span class="fci-icon">📍</span><span>Mumbai, Maharashtra, India – 400063</span></div>
+        <div class="footer-ci"><span class="fci-icon">📞</span><span>+91-00-0000-0000</span></div>
+        <div class="footer-ci"><span class="fci-icon">✉️</span><span>info@growinnadvisors.in</span></div>
+        <div class="footer-ci"><span class="fci-icon">🕐</span><span>Mon – Sat: 9:00 AM – 6:00 PM</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Growinn Advisors. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a>Privacy Policy</a>
+        <a>Legal Information</a>
+        <a>Refund Policy</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════ ABOUT PAGE ══════════ -->
+<div id="page-about" class="page">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a onclick="showPage('home')">Home</a><span>/</span><span>About Us</span></div>
+      <h1>About <em style="color:var(--gold);font-style:normal;">Growinn Advisors</em></h1>
+      <p>A trusted partner in financial advisory, compliance, and strategic growth — serving businesses across India from our Mumbai base.</p>
+    </div>
+  </div>
+
+  <!-- About Body -->
+  <section class="about-sec" style="padding:5.5rem 8%;">
+    <div class="about-visual reveal">
+      <div class="about-img-box"><div class="about-monogram">GA</div></div>
+      <div class="about-badge"><div class="badge-num">25+</div><div class="badge-txt">Years of Trust</div></div>
+    </div>
+    <div class="about-content reveal">
+      <div class="sec-tag">Our Story</div>
+      <h2 class="sec-title">Built on <em>Expertise,</em> Driven by Results</h2>
+      <div class="divider"></div>
+      <p>Growinn Advisors was founded with a singular purpose — to provide businesses and investors with the financial clarity and strategic direction they need to thrive in a complex, fast-moving world.</p>
+      <p>Our multidisciplinary team of Chartered Accountants, Company Secretaries, and industry experts brings together decades of experience across taxation, compliance, wealth management, and investment advisory.</p>
+      <p>Headquartered in Mumbai — India's financial capital — we serve clients across all industries, from early-stage startups to established enterprises and high-net-worth families.</p>
+      <div class="about-pts">
+        <div class="about-pt"><div class="pt-dot"></div><div class="pt-text">Founded in Mumbai</div></div>
+        <div class="about-pt"><div class="pt-dot"></div><div class="pt-text">500+ Active Clients</div></div>
+        <div class="about-pt"><div class="pt-dot"></div><div class="pt-text">15+ Service Areas</div></div>
+        <div class="about-pt"><div class="pt-dot"></div><div class="pt-text">Pan-India Presence</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Vision -->
+  <div class="mv-sec">
+    <div class="mv-card reveal">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">🎯</div>
+      <h3>Our Mission</h3>
+      <div class="divider"></div>
+      <p>To empower businesses with expert financial, accounting, and compliance solutions tailored to their unique needs. Through our multidisciplinary team, we strive to deliver accurate, efficient, and innovative services that enhance financial integrity, regulatory compliance, and business growth.</p>
+    </div>
+    <div class="mv-card reveal">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">🔭</div>
+      <h3>Our Vision</h3>
+      <div class="divider"></div>
+      <p>To be a trusted partner and industry leader in financial and compliance solutions, setting the benchmark for excellence and innovation. We aim to simplify complex financial processes, foster transparency, and enable businesses to thrive in an ever-evolving regulatory landscape.</p>
+    </div>
+  </div>
+
+  <!-- Core Values -->
+  <section class="values-sec">
+    <div class="reveal" style="text-align:center;">
+      <div class="sec-tag">What We Stand For</div>
+      <h2 class="sec-title">Our Core <em>Values</em></h2>
+      <div class="divider divider-center"></div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal"><div class="value-ico">🤝</div><div class="value-name">Integrity</div><div class="value-text">We operate with complete transparency and ethical practice in every engagement, building trust that lasts decades.</div></div>
+      <div class="value-card reveal"><div class="value-ico">💡</div><div class="value-name">Innovation</div><div class="value-text">We bring fresh thinking and structured ideas to complex financial challenges, driving smarter outcomes for our clients.</div></div>
+      <div class="value-card reveal"><div class="value-ico">🏆</div><div class="value-name">Excellence</div><div class="value-text">Every assignment is executed with utmost care, active leadership, and a commitment to delivering value-added solutions.</div></div>
+      <div class="value-card reveal"><div class="value-ico">👥</div><div class="value-name">Client Focus</div><div class="value-text">Our clients' needs, circumstances, and preferences always come first — we succeed only when they succeed.</div></div>
+      <div class="value-card reveal"><div class="value-ico">🌍</div><div class="value-name">Global Outlook</div><div class="value-text">We combine local expertise with global standards to help businesses navigate an ever-changing international landscape.</div></div>
+      <div class="value-card reveal"><div class="value-ico">⚡</div><div class="value-name">Agility</div><div class="value-text">We respond swiftly to regulatory changes and market shifts, ensuring our clients are always a step ahead.</div></div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Ready to Work Together?</h2>
+    <p>Let's discuss how Growinn Advisors can help your business achieve its full potential.</p>
+    <button class="btn-dark" onclick="showPage('contact')">Get in Touch</button>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <span class="footer-logo-f" onclick="showPage('home')">Growinn<span> Advisors</span></span>
+        <div class="footer-about">A multidisciplinary financial advisory firm delivering bespoke solutions in taxation, compliance, wealth management, and investment banking. Based in Mumbai.</div>
+        <div class="social-links"><div class="social-link">in</div><div class="social-link">f</div><div class="social-link">tw</div><div class="social-link">ig</div></div>
+      </div>
+      <div><div class="footer-head">Services</div><ul class="footer-ul"><li><a onclick="showPage('services')">Attest & Assurance</a></li><li><a onclick="showPage('services')">Direct Tax Advisory</a></li><li><a onclick="showPage('services')">Indirect Tax Advisory</a></li><li><a onclick="showPage('services')">Debt Syndication</a></li><li><a onclick="showPage('services')">Wealth Services</a></li></ul></div>
+      <div><div class="footer-head">Quick Links</div><ul class="footer-ul"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About Us</a></li><li><a onclick="showPage('team')">Our Team</a></li><li><a onclick="showPage('careers')">Careers</a></li><li><a onclick="showPage('contact')">Contact Us</a></li></ul></div>
+      <div><div class="footer-head">Contact</div><div class="footer-ci"><span class="fci-icon">📍</span><span>Mumbai, Maharashtra, India – 400063</span></div><div class="footer-ci"><span class="fci-icon">📞</span><span>+91-00-0000-0000</span></div><div class="footer-ci"><span class="fci-icon">✉️</span><span>info@growinnadvisors.in</span></div></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Growinn Advisors. All rights reserved.</span><div class="footer-bottom-links"><a>Privacy Policy</a><a>Legal Information</a><a>Refund Policy</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════ SERVICES PAGE ══════════ -->
+<div id="page-services" class="page">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a onclick="showPage('home')">Home</a><span>/</span><span>Services</span></div>
+      <h1>Our <em style="color:var(--gold);font-style:normal;">Services</em></h1>
+      <p>Comprehensive financial and advisory services tailored to help businesses grow, comply, and thrive across every stage.</p>
+    </div>
+  </div>
+
+  <section class="services-full">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem;">
+      <div class="sec-tag">What We Offer</div>
+      <h2 class="sec-title">15+ Specialized <em>Service Areas</em></h2>
+      <div class="divider divider-center"></div>
+    </div>
+    <div class="svc-full-grid">
+      <div class="svc-full-card reveal"><div class="sfc-ico">📋</div><div class="sfc-name">Attest & Assurance</div><div class="sfc-desc">Comprehensive audit and assurance services ensuring financial accuracy, transparency, and full regulatory compliance for your business.</div><ul class="sfc-list"><li>Statutory Audits</li><li>Internal Audits</li><li>Management Audits</li><li>Information Systems Audits</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">📈</div><div class="sfc-name">Direct Tax Advisory</div><div class="sfc-desc">Expert guidance on all aspects of direct taxation including assessments, litigation, and comprehensive advisory for individuals and corporates.</div><ul class="sfc-list"><li>Income Tax Assessments</li><li>Search & Survey Matters</li><li>Tax Litigation Support</li><li>Tax Planning & Structuring</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">🧾</div><div class="sfc-name">Indirect Tax Advisory</div><div class="sfc-desc">GST compliance, litigation, and strategic advisory for all indirect taxation matters handled by dedicated professionals.</div><ul class="sfc-list"><li>GST Compliance</li><li>GST Litigation</li><li>Customs & Excise Advisory</li><li>GST Health Checks</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">💼</div><div class="sfc-name">Debt Syndication</div><div class="sfc-desc">Structured debt advisory and syndication with an extensive network across banks, NBFCs, and financial institutions.</div><ul class="sfc-list"><li>Debt Structuring</li><li>Debt Restructuring</li><li>Structured Finance</li><li>Working Capital Finance</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">📊</div><div class="sfc-name">Business Advisory</div><div class="sfc-desc">Strategic business advisory to help companies make informed decisions, optimize performance, and plan confidently for the future.</div><ul class="sfc-list"><li>Business Strategy</li><li>Financial Modelling</li><li>Due Diligence</li><li>Valuation Services</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">🏢</div><div class="sfc-name">Business Finance</div><div class="sfc-desc">End-to-end business finance solutions helping companies secure the right funding at the right time and cost.</div><ul class="sfc-list"><li>Project Finance</li><li>Trade Finance</li><li>Equipment Finance</li><li>Supply Chain Finance</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">🛠️</div><div class="sfc-name">Business Support</div><div class="sfc-desc">Operational and administrative support services to help businesses run more efficiently and focus on core growth.</div><ul class="sfc-list"><li>Accounting KPO</li><li>MIS Reporting</li><li>Payroll Management</li><li>Virtual CFO Services</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">💎</div><div class="sfc-name">Wealth Services</div><div class="sfc-desc">Holistic wealth management and investment strategies for high-net-worth individuals, families, and corporate clients.</div><ul class="sfc-list"><li>Wealth Planning</li><li>Portfolio Advisory</li><li>Estate Planning</li><li>Insurance Advisory</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">👨‍👩‍👧</div><div class="sfc-name">Family Office</div><div class="sfc-desc">Dedicated family office services for HNI families to manage wealth, governance, succession, and investments holistically.</div><ul class="sfc-list"><li>Family Governance</li><li>Succession Planning</li><li>Consolidated Reporting</li><li>Philanthropy Advisory</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">🏛️</div><div class="sfc-name">Investment Banking</div><div class="sfc-desc">Full-spectrum investment banking assistance across equity, debt, and M&A transactions in multiple sectors.</div><ul class="sfc-list"><li>Equity Capital Markets</li><li>Mergers & Acquisitions</li><li>Cross-Border Transactions</li><li>PE/VC Fundraising</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">📑</div><div class="sfc-name">Portfolio Management</div><div class="sfc-desc">Professional portfolio management services to optimize returns and manage risk across diverse asset classes.</div><ul class="sfc-list"><li>Discretionary PMS</li><li>Non-Discretionary PMS</li><li>Fund Performance Review</li><li>Risk Assessment</li></ul></div>
+      <div class="svc-full-card reveal"><div class="sfc-ico">⚖️</div><div class="sfc-name">Regulatory Matters</div><div class="sfc-desc">Expert navigation of complex regulatory frameworks including Companies Act, LLP Act, SEBI, and FEMA requirements.</div><ul class="sfc-list"><li>Company Law Compliance</li><li>SEBI Compliance</li><li>FEMA Advisory</li><li>RBI Filings</li></ul></div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Need a Custom Solution?</h2>
+    <p>Our team of experts will design a service package tailored specifically to your business needs.</p>
+    <button class="btn-dark" onclick="showPage('contact')">Talk to an Expert</button>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><span class="footer-logo-f" onclick="showPage('home')">Growinn<span> Advisors</span></span><div class="footer-about">A multidisciplinary financial advisory firm delivering bespoke solutions in taxation, compliance, wealth management, and investment banking.</div><div class="social-links"><div class="social-link">in</div><div class="social-link">f</div><div class="social-link">tw</div><div class="social-link">ig</div></div></div>
+      <div><div class="footer-head">Services</div><ul class="footer-ul"><li><a onclick="showPage('services')">Attest & Assurance</a></li><li><a onclick="showPage('services')">Direct Tax Advisory</a></li><li><a onclick="showPage('services')">Indirect Tax Advisory</a></li><li><a onclick="showPage('services')">Debt Syndication</a></li><li><a onclick="showPage('services')">Wealth Services</a></li></ul></div>
+      <div><div class="footer-head">Quick Links</div><ul class="footer-ul"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About Us</a></li><li><a onclick="showPage('team')">Our Team</a></li><li><a onclick="showPage('careers')">Careers</a></li><li><a onclick="showPage('contact')">Contact Us</a></li></ul></div>
+      <div><div class="footer-head">Contact</div><div class="footer-ci"><span class="fci-icon">📍</span><span>Mumbai, Maharashtra, India</span></div><div class="footer-ci"><span class="fci-icon">📞</span><span>+91-00-0000-0000</span></div><div class="footer-ci"><span class="fci-icon">✉️</span><span>info@growinnadvisors.in</span></div></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Growinn Advisors. All rights reserved.</span><div class="footer-bottom-links"><a>Privacy Policy</a><a>Legal Information</a><a>Refund Policy</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════ TEAM PAGE ══════════ -->
+<div id="page-team" class="page">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a onclick="showPage('home')">Home</a><span>/</span><span>Our Team</span></div>
+      <h1>Our <em style="color:var(--gold);font-style:normal;">Leadership Team</em></h1>
+      <p>Meet the seasoned professionals driving Growinn Advisors' mission of excellence, integrity, and growth.</p>
+    </div>
+  </div>
+
+  <section class="team-page">
+    <div class="reveal" style="text-align:center;margin-bottom:3rem;">
+      <div class="sec-tag">The People Behind Our Success</div>
+      <h2 class="sec-title">Expert <em>Directors & Leaders</em></h2>
+      <div class="divider divider-center"></div>
+    </div>
+    <div class="team-full-grid">
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">AK</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Arjun Kapoor</div><div class="tf-role">Director – Direct Tax Advisory</div><div class="tf-bio">A Fellow Chartered Accountant with over 20 years of experience in direct taxation, litigation, and advisory services for corporates and HNIs across India.</div></div></div>
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">PS</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Priya Sharma</div><div class="tf-role">Director – Wealth Services</div><div class="tf-bio">An MBA with 18+ years in wealth management and investment advisory. Specializes in designing strategies for HNI families, portfolio optimization, and estate planning.</div></div></div>
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">RM</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Rohan Mehta</div><div class="tf-role">Director – Investment Banking</div><div class="tf-bio">A Chartered Accountant with 22+ years in corporate finance and investment banking. Has executed large-ticket equity and debt transactions across consumer, NBFC, and infrastructure sectors.</div></div></div>
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">SJ</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Sunita Joshi</div><div class="tf-role">Director – Compliance & Secretarial</div><div class="tf-bio">An Associate Company Secretary with 15+ years in corporate law, SEBI compliance, and secretarial practice. Expert in Companies Act, LLP Act, and regulatory advisory.</div></div></div>
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">MJ</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Manoj Jain</div><div class="tf-role">Director – Accounting & Assurance</div><div class="tf-bio">A Fellow Chartered Accountant with 20+ years in statutory audits, management accounting, MIS, and compliance outsourcing. Heads Attest and Accounting KPO services.</div></div></div>
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">NK</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Neha Kulkarni</div><div class="tf-role">Director – Indirect Tax & GST</div><div class="tf-bio">A dedicated GST and indirect tax professional with 16+ years handling compliance, litigation, and advisory. Known for meticulous delivery and strong government networks.</div></div></div>
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">DA</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Deepak Agarwal</div><div class="tf-role">Director – Debt Advisory</div><div class="tf-bio">A Fellow CA with 25+ years in debt syndication, debt structuring, and structured finance. Successfully raised over ₹10 Billion for clients across varied industry segments.</div></div></div>
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">RV</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Ritu Verma</div><div class="tf-role">Director – Family Office & PMS</div><div class="tf-bio">A finance professional with 12+ years specializing in family office management, portfolio management, and high-net-worth client servicing with a focus on long-term wealth creation.</div></div></div>
+      <div class="tf-card reveal"><div class="tf-photo"><div class="tf-init">SP</div><div class="tf-overlay"></div></div><div class="tf-info"><div class="tf-name">Sameer Patil</div><div class="tf-role">AVP – Business Development</div><div class="tf-bio">An MBA with 10+ years in financial services business development. Handles client onboarding, strategic partnerships, and regional expansion for Growinn Advisors.</div></div></div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Work With Our Experts</h2>
+    <p>Our team is ready to understand your needs and craft a solution built specifically for your business.</p>
+    <button class="btn-dark" onclick="showPage('contact')">Schedule a Consultation</button>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><span class="footer-logo-f" onclick="showPage('home')">Growinn<span> Advisors</span></span><div class="footer-about">A multidisciplinary financial advisory firm delivering bespoke solutions in taxation, compliance, wealth management, and investment banking.</div><div class="social-links"><div class="social-link">in</div><div class="social-link">f</div><div class="social-link">tw</div><div class="social-link">ig</div></div></div>
+      <div><div class="footer-head">Services</div><ul class="footer-ul"><li><a onclick="showPage('services')">Attest & Assurance</a></li><li><a onclick="showPage('services')">Direct Tax Advisory</a></li><li><a onclick="showPage('services')">Indirect Tax Advisory</a></li><li><a onclick="showPage('services')">Debt Syndication</a></li><li><a onclick="showPage('services')">Wealth Services</a></li></ul></div>
+      <div><div class="footer-head">Quick Links</div><ul class="footer-ul"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About Us</a></li><li><a onclick="showPage('team')">Our Team</a></li><li><a onclick="showPage('careers')">Careers</a></li><li><a onclick="showPage('contact')">Contact Us</a></li></ul></div>
+      <div><div class="footer-head">Contact</div><div class="footer-ci"><span class="fci-icon">📍</span><span>Mumbai, Maharashtra, India</span></div><div class="footer-ci"><span class="fci-icon">📞</span><span>+91-00-0000-0000</span></div><div class="footer-ci"><span class="fci-icon">✉️</span><span>info@growinnadvisors.in</span></div></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Growinn Advisors. All rights reserved.</span><div class="footer-bottom-links"><a>Privacy Policy</a><a>Legal Information</a><a>Refund Policy</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════ CAREERS PAGE ══════════ -->
+<div id="page-careers" class="page">
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <div class="breadcrumb"><a onclick="showPage('home')">Home</a><span>/</span><span>Career</span></div>
+      <h1>Grow Your <em style="color:var(--gold);font-style:normal;">Career</em> With Us</h1>
+      <p>Join a team of passionate professionals at Growinn Advisors and build a rewarding career in financial services.</p>
+    </div>
+  </div>
+
+  <section class="careers-sec">
+    <div class="career-intro reveal">
+      <div class="sec-tag" style="text-align:center;">Join Our Team</div>
+      <h2 class="sec-title" style="text-align:center;">Why Work at <em>Growinn Advisors?</em></h2>
+      <div class="divider divider-center"></div>
+      <p>At Growinn Advisors, we believe our people are our greatest asset. We offer an environment that fosters learning, collaboration, and career growth — giving you the tools and opportunities to become the best version of yourself.</p>
+    </div>
+
+    <!-- Perks -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:4rem;" class="reveal">
+      <div class="value-card"><div class="value-ico">🎓</div><div class="value-name">Continuous Learning</div><div class="value-text">Regular training, certifications, and workshops to keep your skills sharp and career on track.</div></div>
+      <div class="value-card"><div class="value-ico">🚀</div><div class="value-name">Fast Growth</div><div class="value-text">A meritocratic environment where hard work is rewarded with rapid career advancement.</div></div>
+      <div class="value-card"><div class="value-ico">🌟</div><div class="value-name">Great Culture</div><div class="value-text">A collaborative, respectful, and inclusive workplace where every voice is heard and valued.</div></div>
+    </div>
+
+    <div class="reveal">
+      <div class="sec-tag">Open Positions</div>
+      <h2 class="sec-title">Current <em>Opportunities</em></h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="jobs-grid">
+      <div class="job-card reveal">
+        <div class="job-dept">Taxation</div>
+        <div class="job-title">Senior Tax Consultant – Direct Tax</div>
+        <div class="job-meta"><span class="job-tag">📍 Mumbai</span><span class="job-tag">Full-Time</span><span class="job-tag">3–6 Years Exp</span></div>
+        <div class="job-desc">Looking for a qualified CA with expertise in direct tax compliance, assessments, and advisory for corporate and HNI clients.</div>
+        <button class="btn-gold" onclick="showPage('contact')">Apply Now</button>
+      </div>
+      <div class="job-card reveal">
+        <div class="job-dept">GST & Indirect Tax</div>
+        <div class="job-title">GST Compliance Manager</div>
+        <div class="job-meta"><span class="job-tag">📍 Mumbai</span><span class="job-tag">Full-Time</span><span class="job-tag">4–8 Years Exp</span></div>
+        <div class="job-desc">Seeking a GST expert to handle compliance, return filings, and advisory for a portfolio of corporate clients across sectors.</div>
+        <button class="btn-gold" onclick="showPage('contact')">Apply Now</button>
+      </div>
+      <div class="job-card reveal">
+        <div class="job-dept">Audit & Assurance</div>
+        <div class="job-title">Audit Associate</div>
+        <div class="job-meta"><span class="job-tag">📍 Mumbai</span><span class="job-tag">Full-Time</span><span class="job-tag">0–3 Years Exp</span></div>
+        <div class="job-desc">Fresh or semi-qualified CA to assist in statutory and internal audits, MIS reporting, and client deliverables under senior supervision.</div>
+        <button class="btn-gold" onclick="showPage('contact')">Apply Now</button>
+      </div>
+      <div class="job-card reveal">
+        <div class="job-dept">Wealth Management</div>
+        <div class="job-title">Wealth Relationship Manager</div>
+        <div class="job-meta"><span class="job-tag">📍 Mumbai</span><span class="job-tag">Full-Time</span><span class="job-tag">3–7 Years Exp</span></div>
+        <div class="job-desc">Manage relationships with HNI clients, provide investment advisory, and grow the wealth management portfolio through new client acquisition.</div>
+        <button class="btn-gold" onclick="showPage('contact')">Apply Now</button>
+      </div>
+      <div class="job-card reveal">
+        <div class="job-dept">Investment Banking</div>
+        <div class="job-title">Analyst – Investment Banking</div>
+        <div class="job-meta"><span class="job-tag">📍 Mumbai</span><span class="job-tag">Full-Time</span><span class="job-tag">1–4 Years Exp</span></div>
+        <div class="job-desc">Support senior bankers on M&A, fundraising, and structured finance transactions through financial modelling, research, and due diligence.</div>
+        <button class="btn-gold" onclick="showPage('contact')">Apply Now</button>
+      </div>
+      <div class="job-card reveal">
+        <div class="job-dept">Operations</div>
+        <div class="job-title">Business Development Executive</div>
+        <div class="job-meta"><span class="job-tag">📍 Mumbai</span><span class="job-tag">Full-Time</span><span class="job-tag">2–5 Years Exp</span></div>
+        <div class="job-desc">Drive client acquisition and business growth through networking, lead generation, and converting prospects into long-term advisory relationships.</div>
+        <button class="btn-gold" onclick="showPage('contact')">Apply Now</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <h2>Don't See a Suitable Role?</h2>
+    <p>We're always looking for exceptional talent. Send us your resume and we'll be in touch.</p>
+    <button class="btn-dark" onclick="showPage('contact')">Send Your Resume</button>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><span class="footer-logo-f" onclick="showPage('home')">Growinn<span> Advisors</span></span><div class="footer-about">A multidisciplinary financial advisory firm delivering bespoke solutions in taxation, compliance, wealth management, and investment banking.</div><div class="social-links"><div class="social-link">in</div><div class="social-link">f</div><div class="social-link">tw</div><div class="social-link">ig</div></div></div>
+      <div><div class="footer-head">Services</div><ul class="footer-ul"><li><a onclick="showPage('services')">Attest & Assurance</a></li><li><a onclick="showPage('services')">Direct Tax Advisory</a></li><li><a onclick="showPage('services')">Indirect Tax Advisory</a></li><li><a onclick="showPage('services')">Debt Syndication</a></li><li><a onclick="showPage('services')">Wealth Services</a></li></ul></div>
+      <div><div class="footer-head">Quick Links</div><ul class="footer-ul"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About Us</a></li><li><a onclick="showPage('team')">Our Team</a></li><li><a onclick="showPage('careers')">Careers</a></li><li><a onclick="showPage('contact')">Contact Us</a></li></ul></div>
+      <div><div class="footer-head">Contact</div><div class="footer-ci"><span class="fci-icon">📍</span><span>Mumbai, Maharashtra, India</span></div><div class="footer-ci"><span class="fci-icon">📞</span><span>+91-00-0000-0000</span></div><div class="footer-ci"><span class="fci-icon">✉️</span><span>info@growinnadvisors.in</span></div></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Growinn Advisors. All rights reserved.</span><div class="footer-bottom-links"><a>Privacy Policy</a><a>Legal Information</a><a>Refund Policy</a></div></div>
+  </footer>
+</div>
+
+<!-- ══════════ CONTACT PAGE ══════════ -->
+<div id="page-contact" class="page">
+  <div class="contact-hero">
+    <div class="contact-hero-content">
+      <div class="breadcrumb"><a onclick="showPage('home')">Home</a><span>/</span><span>Contact Us</span></div>
+      <h1>Get in <em style="color:var(--gold);font-style:normal;">Touch</em></h1>
+      <p>We'd love to hear from you. Reach out to schedule a free consultation or ask us anything.</p>
+    </div>
+  </div>
+
+  <div class="contact-body">
+    <div class="reveal">
+      <h3>Contact Information</h3>
+      <div class="divider"></div>
+      <div class="cinfo-item"><div class="cinfo-icon">📍</div><div><div class="cinfo-label">Office Address</div><div class="cinfo-val">Mumbai, Maharashtra,<br>India – 400063</div></div></div>
+      <div class="cinfo-item"><div class="cinfo-icon">📞</div><div><div class="cinfo-label">Phone</div><div class="cinfo-val">+91-00-0000-0000</div></div></div>
+      <div class="cinfo-item"><div class="cinfo-icon">✉️</div><div><div class="cinfo-label">Email</div><div class="cinfo-val">info@growinnadvisors.in</div></div></div>
+      <div class="cinfo-item"><div class="cinfo-icon">🕐</div><div><div class="cinfo-label">Office Hours</div><div class="cinfo-val">Monday – Saturday<br>9:00 AM – 6:00 PM IST</div></div></div>
+      <div class="cinfo-item"><div class="cinfo-icon">💼</div><div><div class="cinfo-label">Career Enquiries</div><div class="cinfo-val">careers@growinnadvisors.in</div></div></div>
+
+      <!-- Map placeholder -->
+      <div style="margin-top:2rem;border-radius:4px;overflow:hidden;border:1px solid var(--border);">
+        <div style="background:var(--dark3);height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;">
+          <div style="font-size:2rem;">🗺️</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:0.82rem;letter-spacing:0.05em;">Mumbai, Maharashtra</div>
+          <div style="color:var(--gold);font-size:0.75rem;">India's Financial Capital</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form reveal">
+      <h3>Send Us a Message</h3>
+      <div class="divider"></div>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="Rahul"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Sharma"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="rahul@company.com"></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+91 98765 43210"></div>
+      </div>
+      <div class="form-group">
+        <label>Company / Organisation</label>
+        <input type="text" placeholder="Your Company Name">
+      </div>
+      <div class="form-group">
+        <label>Service of Interest</label>
+        <select>
+          <option value="">– Select a Service –</option>
+          <option>Attest & Assurance</option>
+          <option>Direct Tax Advisory</option>
+          <option>Indirect Tax Advisory</option>
+          <option>Debt Syndication</option>
+          <option>Business Advisory</option>
+          <option>Business Finance</option>
+          <option>Business Support</option>
+          <option>Wealth Services</option>
+          <option>Family Office</option>
+          <option>Investment Banking</option>
+          <option>Portfolio Management</option>
+          <option>Regulatory Matters</option>
+          <option>Career Enquiry</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Your Message</label>
+        <textarea placeholder="Tell us about your requirements and how we can help you..."></textarea>
+      </div>
+      <button class="btn-gold" style="width:100%;justify-content:center;text-align:center;" onclick="submitForm()">Send Message →</button>
+      <div class="form-success" id="formSuccess">✅ Thank you! We've received your message and will get back to you within 24 hours.</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div><span class="footer-logo-f" onclick="showPage('home')">Growinn<span> Advisors</span></span><div class="footer-about">A multidisciplinary financial advisory firm delivering bespoke solutions in taxation, compliance, wealth management, and investment banking.</div><div class="social-links"><div class="social-link">in</div><div class="social-link">f</div><div class="social-link">tw</div><div class="social-link">ig</div></div></div>
+      <div><div class="footer-head">Services</div><ul class="footer-ul"><li><a onclick="showPage('services')">Attest & Assurance</a></li><li><a onclick="showPage('services')">Direct Tax Advisory</a></li><li><a onclick="showPage('services')">Indirect Tax Advisory</a></li><li><a onclick="showPage('services')">Debt Syndication</a></li><li><a onclick="showPage('services')">Wealth Services</a></li></ul></div>
+      <div><div class="footer-head">Quick Links</div><ul class="footer-ul"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('about')">About Us</a></li><li><a onclick="showPage('team')">Our Team</a></li><li><a onclick="showPage('careers')">Careers</a></li><li><a onclick="showPage('contact')">Contact Us</a></li></ul></div>
+      <div><div class="footer-head">Contact</div><div class="footer-ci"><span class="fci-icon">📍</span><span>Mumbai, Maharashtra, India</span></div><div class="footer-ci"><span class="fci-icon">📞</span><span>+91-00-0000-0000</span></div><div class="footer-ci"><span class="fci-icon">✉️</span><span>info@growinnadvisors.in</span></div></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Growinn Advisors. All rights reserved.</span><div class="footer-bottom-links"><a>Privacy Policy</a><a>Legal Information</a><a>Refund Policy</a></div></div>
+  </footer>
+</div>
+
+<script>
+// ── PAGE NAVIGATION ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === name);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(initReveal, 100);
+}
+
+// ── HAMBURGER ──
+function toggleMenu() {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// ── SCROLL REVEAL ──
+function initReveal() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.page.active .reveal:not(.visible)').forEach(el => obs.observe(el));
+}
+initReveal();
+
+// ── NAV SHRINK ON SCROLL ──
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').style.height = window.scrollY > 60 ? '58px' : '70px';
+});
+
+// ── CONTACT FORM ──
+function submitForm() {
+  const s = document.getElementById('formSuccess');
+  s.style.display = 'block';
+  setTimeout(() => { s.style.display = 'none'; }, 5000);
+}
+</script>
+</body>
+</html>
